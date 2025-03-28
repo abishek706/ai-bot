@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JARVIS - Super AI</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #0f111a;
+      color: #f5f5f5;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #00ffe7;
+    }
+    p.greeting {
+      font-style: italic;
+      margin-bottom: 30px;
+      color: #aaa;
+    }
+    button {
+      margin: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #1f1f2e;
+      color: #00ffe7;
+      border: 1px solid #00ffe7;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #00ffe7;
+      color: #0f111a;
+    }
+    #output {
+      margin-top: 40px;
+      padding: 25px;
+      background: #1f1f2e;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,255,231,0.2);
+    }
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🤖 Welcome to JARVIS</h1>
+  <p class="greeting">Your personal AI assistant .</p>
+
+  <!-- Buttons -->
+  <div>
+    <button onclick="catFact()">🐱 Cat Fact</button>
+    <button onclick="chuckJoke()">🤣 Chuck Joke</button>
+    <button onclick="nasaApod()">🌌 NASA APOD</button>
+    <button onclick="advice()">💡 Advice</button>
+    <button onclick="randomUser()">👤 Random User</button>
+    <button onclick="kanyeQuote()">🎤 Kanye Quote</button>
+    <button onclick="dogImage()">🐶 Dog Image</button>
+    <button onclick="yesno()">❓ Yes/No</button>
+    <button onclick="deckOfCards()">🃏 Card Draw</button>
+    <button onclick="numberFact()">🔢 Number Fact</button>
+  </div>
+
+  <!-- Output -->
+  <div id="output"></div>
+
+  <script>
+    const output = document.getElementById("output");
+
+    async function catFact() {
+      const res = await fetch("https://catfact.ninja/fact");
+      const data = await res.json();
+      output.innerHTML = `🐱 <b>Cat Fact:</b> ${data.fact}`;
+    }
+
+    async function chuckJoke() {
+      const res = await fetch("https://api.chucknorris.io/jokes/random");
+      const data = await res.json();
+      output.innerHTML = `🤣 <b>Chuck Norris Joke:</b> ${data.value}`;
+    }
+
+    async function nasaApod() {
+      const res = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+      const data = await res.json();
+      output.innerHTML = `
+        <h2>🌌 ${data.title}</h2>
+        <p>${data.date}</p>
+        <img src="${data.url}" alt="NASA APOD" />
+        <p>${data.explanation}</p>
+      `;
+    }
+
+    async function advice() {
+      const res = await fetch("https://api.adviceslip.com/advice");
+      const data = await res.json();
+      output.innerHTML = `💡 <b>Advice:</b> ${data.slip.advice}`;
+    }
+
+    async function randomUser() {
+      const res = await fetch("https://randomuser.me/api/");
+      const data = await res.json();
+      const user = data.results[0];
+      output.innerHTML = `
+        👤 <b>Name:</b> ${user.name.first} ${user.name.last}<br>
+        🌍 <b>Country:</b> ${user.location.country}<br>
+        📧 <b>Email:</b> ${user.email}<br>
+        <img src="${user.picture.large}" alt="User Picture" />
+      `;
+    }
+
+    async function kanyeQuote() {
+      const res = await fetch("https://api.kanye.rest");
+      const data = await res.json();
+      output.innerHTML = `🎤 <b>Kanye says:</b> "${data.quote}"`;
+    }
+
+    async function dogImage() {
+      const res = await fetch("https://dog.ceo/api/breeds/image/random");
+      const data = await res.json();
+      output.innerHTML = `
+        🐶 <b>Dog Image:</b><br>
+        <img src="${data.message}" alt="Dog" />
+      `;
+    }
+
+    async function yesno() {
+      const res = await fetch("https://yesno.wtf/api");
+      const data = await res.json();
+      output.innerHTML = `
+        ❓ <b>Answer:</b> ${data.answer.toUpperCase()}<br>
+        <img src="${data.image}" alt="Yes/No GIF" />
+      `;
+    }
+
+    async function deckOfCards() {
+      const res = await fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=1");
+      const data = await res.json();
+      const card = data.cards[0];
+      output.innerHTML = `
+        🃏 <b>Card:</b> ${card.value} of ${card.suit}<br>
+        <img src="${card.image}" alt="Card" />
+      `;
+    }
+
+    async function numberFact() {
+      const res = await fetch("http://numbersapi.com/random/trivia?json");
+      const data = await res.json();
+      output.innerHTML = `🔢 <b>Number Fact:</b> ${data.text}`;
+    }
+  </script>
+</body>
+</html>
